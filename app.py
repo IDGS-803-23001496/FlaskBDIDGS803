@@ -43,9 +43,49 @@ def detalles():
 		alumn1=db.session.query(Alumnos).filter(Alumnos.id==id).first()
 		id=request.args.get("id")
 		nombre=alumn1.nombre
-		aPaterno=alumn1.aPaterno
+		apaterno=alumn1.apaterno
 		email=alumn1.email		
-	return render_template("detalles.html",nombre=nombre, aPaterno=aPaterno,email=email)
+	return render_template("detalles.html",nombre=nombre, apaterno=apaterno,email=email)
+
+@app.route("/modificar",methods=["GET","POST"])
+def modificar():
+	create_form=forms.UserForm(request.form)
+	if request.method=="GET":
+		id=request.args.get("id")
+		alumn1=db.session.query(Alumnos).filter(Alumnos.id==id).first()
+		create_form.id.data=request.args.get("id")
+		create_form.nombre.data=alumn1.nombre
+		create_form.apaterno.data=alumn1.apaterno
+		create_form.email.data=alumn1.email
+	if request.method=="POST":
+		id=create_form.id.data
+		alumn1=db.session.query(Alumnos).filter(Alumnos.id==id).first()
+		alumn1.nombre=create_form.nombre.data
+		alumn1.apaterno=create_form.apaterno.data
+		alumn1.email=create_form.email.data
+		db.session.add(alumn1)
+		db.session.commit()
+		return redirect(url_for("index"))
+	return render_template("modificar.html", form=create_form)
+
+@app.route("/eliminar",methods=["GET","POST"])
+def eliminar():
+	create_form=forms.UserForm(request.form)
+	if request.method=="GET":
+		id=request.args.get("id")
+		alumn1=db.session.query(Alumnos).filter(Alumnos.id==id).first()
+		create_form.id.data=request.args.get("id")
+		create_form.nombre.data=alumn1.nombre
+		create_form.apaterno.data=alumn1.apaterno
+		create_form.email.data=alumn1.email
+	if request.method=="POST":
+		id=create_form.id.data
+		alumn = Alumnos.query.get(id)
+		db.session.delete(alumn)
+		db.session.commit()
+		return redirect(url_for("index"))
+	return render_template("eliminar.html", form=create_form)
+
 
 if __name__ == '__main__':
 	csrf.init_app(app)
