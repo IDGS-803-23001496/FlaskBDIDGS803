@@ -1,0 +1,118 @@
+{% extends "layout.html" %}
+
+{% block container %}
+
+<div class="flex justify-center items-center min-h-[70vh] px-4 py-8">
+
+  <div class="w-full max-w-4xl backdrop-blur-md rounded-2xl shadow-xl overflow-hidden"
+       style="background:rgba(255,240,245,0.97); border:1.5px solid #f8bbd0;">
+
+    <!-- Encabezado -->
+    <div class="px-8 py-6" style="background:linear-gradient(135deg,#f48fb1,#e91e8c);">
+      <h1 class="text-xl font-bold text-white text-center">Consulta de Inscripciones</h1>
+    </div>
+
+    <div class="px-8 py-6">
+
+      <!-- Filtros -->
+      <form method="GET" action="{{ url_for('cursos.listadoInscritos') }}"
+            class="flex flex-wrap gap-3 mb-6 items-center justify-center">
+
+        <select name="alumno_id"
+                class="px-4 py-2 rounded-lg text-sm font-medium outline-none"
+                style="background:#fce4ec; border:1.5px solid #f48fb1; color:#880e4f;">
+          <option value="">Alumno</option>
+          {% for a in alumnos_all %}
+          <option value="{{ a.id }}">{{ a.nombre }} {{ a.apellido }}</option>
+          {% endfor %}
+        </select>
+
+        <select name="maestro_id"
+                class="px-4 py-2 rounded-lg text-sm font-medium outline-none"
+                style="background:#fce4ec; border:1.5px solid #f48fb1; color:#880e4f;">
+          <option value="">Docente</option>
+          {% for m in maestros %}
+          <option value="{{ m.id }}">{{ m.nombre }} {{ m.apellido }}</option>
+          {% endfor %}
+        </select>
+
+        <select name="curso_id"
+                class="px-4 py-2 rounded-lg text-sm font-medium outline-none"
+                style="background:#fce4ec; border:1.5px solid #f48fb1; color:#880e4f;">
+          <option value="">Curso</option>
+          {% for c in cursos_all %}
+          <option value="{{ c.id }}">{{ c.nombre }}</option>
+          {% endfor %}
+        </select>
+
+        <button class="px-5 py-2 text-sm text-white font-medium rounded-lg shadow
+                       transform hover:-translate-y-0.5 transition-all duration-200"
+                style="background:#e91e8c;">
+          Buscar
+        </button>
+
+        <a href="{{ url_for('cursos.index') }}"
+           class="inline-flex items-center gap-2 px-5 py-2 text-sm text-white font-medium rounded-lg shadow
+                  transform hover:-translate-y-0.5 transition-all duration-200"
+           style="background:#f48fb1;">
+          ← Volver a cursos
+        </a>
+
+      </form>
+
+      <!-- Tabla -->
+      <div class="overflow-x-auto rounded-xl" style="border:1.5px solid #f8bbd0;">
+        <table class="min-w-full" style="background:transparent;">
+
+          <thead style="background:#fce4ec;">
+            <tr>
+              <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider" style="color:#ad1457;">Curso</th>
+              <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider" style="color:#ad1457;">Docente</th>
+              <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider" style="color:#ad1457;">Alumnos Inscritos</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% for curso in cursos %}
+            <tr class="transition-colors duration-150" style="border-top:1px solid #f8bbd0;"
+                onmouseover="this.style.background='#fce4ec'" onmouseout="this.style.background='transparent'">
+
+              <td class="px-6 py-4 font-semibold" style="color:#880e4f;">{{ curso.nombre }}</td>
+
+              <td class="px-6 py-4" style="color:#ad1457;">{{ curso.maestro.nombre }} {{ curso.maestro.apellido }}</td>
+
+              <td class="px-6 py-4" style="color:#c2185b;">
+                {% if curso.alumnos %}
+                  {% for alumno in curso.alumnos %}
+                    • {{ alumno.nombre }} {{ alumno.apellido }}<br>
+                  {% endfor %}
+                {% else %}
+                  <span style="color:#f48fb1;">Sin alumnos</span>
+                {% endif %}
+              </td>
+
+            </tr>
+            {% else %}
+            <tr>
+              <td colspan="3" class="px-6 py-12 text-center">
+                <div class="flex flex-col items-center gap-2">
+                  <svg class="w-10 h-10" style="color:#f48fb1;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                </div>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+
+        </table>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+{% endblock %}

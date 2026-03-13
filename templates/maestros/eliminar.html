@@ -1,0 +1,60 @@
+{% extends 'layout.html' %}
+{% block container %}
+{% import "_macros.html" as macros %}
+
+<div class="flex justify-center items-center min-h-[70vh] px-4">
+
+  <div class="w-full max-w-xl rounded-2xl shadow-xl overflow-hidden"
+       style="border:1.5px solid #f8bbd0;">
+
+    <!-- Encabezado -->
+    <div class="px-8 py-6 flex items-center gap-4"
+         style="background:linear-gradient(135deg,#880e4f,#ad1457);">
+      <div class="w-12 h-12 rounded-full flex items-center justify-center shadow"
+           style="background:rgba(255,255,255,0.2); border:2px solid rgba(255,255,255,0.4);">
+        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+        </svg>
+      </div>
+      <div>
+        <h2 class="text-lg font-bold text-white">Eliminar Maestro</h2>
+      </div>
+    </div>
+
+    <!-- Formulario -->
+    <form method="POST" class="px-8 py-6" style="background:rgba(255,240,245,0.97);" novalidate>
+
+      {{ macros.campo(form.matricula, class="block") }}
+      {{ macros.campo(form.nombre, class="block") }}
+      {{ macros.campo(form.apellido, class="block") }}
+      {{ macros.campo(form.correo, class="block") }}
+      {{ macros.campo(form.especialidad, class="block") }}
+
+      <div class="flex justify-end gap-4 mt-6">
+        <button type="submit"
+                class="inline-flex items-center gap-2 px-5 py-2.5
+                       text-white font-medium rounded-lg shadow-md
+                       transform hover:-translate-y-0.5 transition-all duration-200
+                       focus:outline-none focus:ring-2 focus:ring-pink-300"
+                style="background:#880e4f;">
+          Eliminar Maestro
+        </button>
+
+        <a href="{{ url_for('maestros.index') }}"
+           class="inline-flex items-center gap-2 px-5 py-2.5
+                  text-white font-medium rounded-lg shadow-md
+                  transform hover:-translate-y-0.5 transition-all duration-200
+                  focus:outline-none focus:ring-2 focus:ring-pink-200"
+           style="background:#f48fb1;">
+          Volver al listado
+        </a>
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
+
+{% endblock %}
